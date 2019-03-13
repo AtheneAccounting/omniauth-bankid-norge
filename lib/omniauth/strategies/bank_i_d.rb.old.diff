@@ -1,0 +1,27 @@
+--- bank_i_d.rb.obc584	2019-01-24 20:09:51.467676974 +0200
++++ bank_i_d.rb 	2019-01-24 18:31:25.000000000 +0200
+@@ -79,20 +79,15 @@
+         prune! hash
+       end
+ 
+-      def aml_info(kind, value = nil)
++      def aml_info(kind)
+         url = options[:client_options]["aml_#{kind}_url".to_sym]
+-        opts = bearer_request
++        opts = bearer_request.deep_dup
+         if block_given?
+           extra_params = yield
++          opts[:headers].delete('Content-Type'.to_sym)
+           url += '?' + extra_params
+-        elsif  kind == 'report'
+-          return nil unless value
+-          url += '?' + "reportId=#{value}"
+         else
+-          opts[:body] = {
+-            nationality: 'nb',
+-            includeReport: true
+-          }
++          url += '?nationality=NO'
+         end
+         @aml_info = parse_response(client_request(:get, url, opts))
+       end
