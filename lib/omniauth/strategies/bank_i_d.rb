@@ -35,10 +35,10 @@ module OmniAuth
           first_name: t_info.dig('given_name'),
           last_name: t_info.dig('family_name'),
           phone: t_info.dig('phone_number'),
-          address: t_info.dig('address', 'formatted') || aml_info('address').dig('address'),
+          address: t_info&.dig('address', 'formatted') || aml_info('address')&.dig('address'),
           ssn: t_info.dig('nnin'),
-          postcode: t_info.dig('address', 'postal_code'),
-          region: t_info.dig('address', 'locality'),
+          postcode: t_info&.dig('address', 'postal_code'),
+          region: t_info&.dig('address', 'locality'),
           pep_info: aml_info('pep') { 'nationality=NO&includeReport=true' }
           #report_link: aml_info('report', @aml_info[:reportId])
         })
