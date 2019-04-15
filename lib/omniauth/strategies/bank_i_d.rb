@@ -160,10 +160,12 @@ module OmniAuth
 
       def client_request(method, url, options = {})
         begin
+           Rails.logger.debug "making client request to #{url}"
+           Rails.logger.debug "  with options: #{options}"
            resp = client.request(:get, url, options)
            case resp.status
            when 400..599
-             Rails.logger.error "BankID OIDC client error: #{resp&.response&.reason_phrase}, request url: #{url}"
+             Rails.logger.error "BankID OIDC client error: #{resp&.response&.reason_phrase}, request url: #{url}, response status: #{resp.status}"
            end
            resp
         rescue StandardError => e
