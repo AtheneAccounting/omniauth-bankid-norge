@@ -35,7 +35,7 @@ module OmniAuth
           first_name: t_info.dig('given_name'),
           last_name: t_info.dig('family_name'),
           phone: t_info.dig('phone_number'),
-          address: t_info&.dig('address', 'formatted') || aml_info('address')&.dig('address'),
+          address: aml_info('address')&.dig('address') || t_info&.dig('address', 'formatted'),
           ssn: t_info.dig('nnin'),
           postcode: t_info&.dig('address', 'postal_code'),
           region: t_info&.dig('address', 'locality'),
